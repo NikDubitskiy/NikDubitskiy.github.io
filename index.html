@@ -1,1 +1,626 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+  <title>Никита Дубицкий | Nikita V. Dubitskiy — Physicist & Researcher</title>
+
+  <meta name="description" content="Персональная страница Никиты Владимировича Дубицкого (Nikita V. Dubitskiy), физика и исследователя в области физики конденсированного состояния, эпитаксиальных тонких пленок и электронного транспорта.">
+
+  <meta name="keywords" content="Никита Дубицкий, Никита Владимирович Дубицкий, Nikita Dubitskiy, Nikita V. Dubitskiy, physicist, physics, SrIrO3, condensed matter physics, HSE University, IRE RAS">
+
+  <meta name="author" content="Nikita V. Dubitskiy">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      background: #080b10;
+      color: #f4f4f5;
+      line-height: 1.6;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 22px 7%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(8, 11, 16, 0.85);
+      backdrop-filter: blur(16px);
+      z-index: 1000;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .logo {
+      font-size: 18px;
+      font-weight: 650;
+      letter-spacing: 0.5px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 28px;
+      font-size: 14px;
+      color: #b8bec8;
+    }
+
+    .nav-links a:hover {
+      color: white;
+    }
+
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 120px 10% 80px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      width: 700px;
+      height: 700px;
+      right: -250px;
+      top: 50px;
+      background: radial-gradient(
+        circle,
+        rgba(63, 105, 180, 0.18),
+        transparent 65%
+      );
+    }
+
+    .hero-content {
+      max-width: 850px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .eyebrow {
+      color: #8ca8d8;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      font-size: clamp(48px, 8vw, 90px);
+      line-height: 1.02;
+      letter-spacing: -3px;
+      margin-bottom: 15px;
+    }
+
+    .english-name {
+      font-size: clamp(23px, 3vw, 34px);
+      font-weight: 400;
+      color: #8d96a5;
+      margin-bottom: 32px;
+    }
+
+    .hero-description {
+      max-width: 700px;
+      font-size: 20px;
+      color: #c0c6d0;
+      margin-bottom: 38px;
+    }
+
+    .affiliation {
+      color: #8d96a5;
+      font-size: 15px;
+      margin-bottom: 40px;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .button {
+      display: inline-block;
+      padding: 13px 24px;
+      border-radius: 30px;
+      border: 1px solid rgba(255,255,255,0.15);
+      font-size: 14px;
+      transition: 0.25s;
+    }
+
+    .button-primary {
+      background: #f4f4f5;
+      color: #080b10;
+    }
+
+    .button:hover {
+      transform: translateY(-2px);
+      border-color: rgba(255,255,255,0.5);
+    }
+
+    section {
+      padding: 100px 10%;
+      border-top: 1px solid rgba(255,255,255,0.07);
+    }
+
+    .section-label {
+      font-size: 13px;
+      color: #7183a1;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-bottom: 22px;
+    }
+
+    h2 {
+      font-size: clamp(34px, 5vw, 54px);
+      letter-spacing: -1.5px;
+      margin-bottom: 35px;
+    }
+
+    .about-text {
+      max-width: 850px;
+      font-size: 19px;
+      color: #b9c0cb;
+    }
+
+    .research-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      max-width: 1100px;
+    }
+
+    .research-card {
+      padding: 35px;
+      background: #0e1219;
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 18px;
+      transition: 0.3s;
+    }
+
+    .research-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(140,168,216,0.35);
+    }
+
+    .research-card h3 {
+      font-size: 21px;
+      margin-bottom: 12px;
+    }
+
+    .research-card p {
+      color: #929baa;
+      font-size: 15px;
+    }
+
+    .timeline {
+      max-width: 850px;
+    }
+
+    .timeline-item {
+      padding: 0 0 35px 25px;
+      border-left: 1px solid #2b3442;
+      position: relative;
+    }
+
+    .timeline-item::before {
+      content: "";
+      position: absolute;
+      width: 9px;
+      height: 9px;
+      background: #8ca8d8;
+      border-radius: 50%;
+      left: -5px;
+      top: 7px;
+    }
+
+    .timeline-year {
+      color: #8294b3;
+      font-size: 13px;
+      margin-bottom: 5px;
+    }
+
+    .timeline-item h3 {
+      font-size: 19px;
+      margin-bottom: 4px;
+    }
+
+    .timeline-item p {
+      color: #8f98a6;
+    }
+
+    .publication {
+      max-width: 950px;
+      padding: 25px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .publication-year {
+      color: #8294b3;
+      font-size: 13px;
+      margin-bottom: 7px;
+    }
+
+    .publication h3 {
+      font-size: 18px;
+      font-weight: 500;
+      margin-bottom: 8px;
+    }
+
+    .publication p {
+      color: #858e9c;
+      font-size: 14px;
+    }
+
+    .profiles {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .profile-link {
+      padding: 12px 20px;
+      background: #0e1219;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 10px;
+      color: #c1c7d0;
+    }
+
+    footer {
+      padding: 55px 10%;
+      border-top: 1px solid rgba(255,255,255,0.07);
+      color: #667080;
+      font-size: 13px;
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    @media (max-width: 700px) {
+
+      nav {
+        padding: 18px 6%;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .hero {
+        padding-left: 7%;
+        padding-right: 7%;
+      }
+
+      h1 {
+        letter-spacing: -2px;
+      }
+
+      .hero-description {
+        font-size: 17px;
+      }
+
+      section {
+        padding: 75px 7%;
+      }
+
+      .research-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Nikita V. Dubitskiy",
+    "alternateName": [
+      "Никита Дубицкий",
+      "Никита Владимирович Дубицкий",
+      "Nikita Dubitskiy"
+    ],
+    "jobTitle": "Physicist and Researcher",
+    "affiliation": [
+      {
+        "@type": "Organization",
+        "name": "HSE University"
+      },
+      {
+        "@type": "Organization",
+        "name": "Kotelnikov Institute of Radio Engineering and Electronics of RAS"
+      }
+    ],
+    "knowsAbout": [
+      "Condensed Matter Physics",
+      "SrIrO3",
+      "Thin Films",
+      "Electronic Transport",
+      "X-ray Diffraction",
+      "X-ray Photoelectron Spectroscopy"
+    ]
+  }
+  </script>
+
+</head>
+
+<body>
+
+<nav>
+  <div class="logo">NIKITA DUBITSKIY</div>
+
+  <div class="nav-links">
+    <a href="#about">About</a>
+    <a href="#research">Research</a>
+    <a href="#education">Education</a>
+    <a href="#publications">Publications</a>
+    <a href="#profiles">Profiles</a>
+  </div>
+</nav>
+
+
+<section class="hero">
+
+  <div class="hero-content">
+
+    <div class="eyebrow">
+      Physicist · Researcher
+    </div>
+
+    <h1>
+      Никита<br>
+      Дубицкий
+    </h1>
+
+    <div class="english-name">
+      Nikita V. Dubitskiy
+    </div>
+
+    <p class="hero-description">
+      Исследователь в области физики конденсированного состояния,
+      эпитаксиальных тонких плёнок функциональных оксидов
+      и электронного транспорта.
+    </p>
+
+    <div class="affiliation">
+      HSE University · Kotelnikov Institute of Radio Engineering and Electronics of RAS
+    </div>
+
+    <div class="buttons">
+
+      <a href="#research" class="button button-primary">
+        Research
+      </a>
+
+      <a href="#publications" class="button">
+        Publications
+      </a>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<section id="about">
+
+  <div class="section-label">Biography</div>
+
+  <h2>Обо мне</h2>
+
+  <p class="about-text">
+    Никита Владимирович Дубицкий (Nikita V. Dubitskiy) — физик
+    и исследователь в области физики конденсированного состояния.
+    Научная деятельность связана с исследованием структуры,
+    электронных транспортных свойств и электронной структуры
+    эпитаксиальных тонких плёнок функциональных оксидов,
+    включая соединения на основе иридата стронция SrIrO₃.
+  </p>
+
+</section>
+
+
+<section id="research">
+
+  <div class="section-label">Scientific interests</div>
+
+  <h2>Research</h2>
+
+  <div class="research-grid">
+
+    <div class="research-card">
+      <h3>SrIrO₃ Thin Films</h3>
+      <p>
+        Эпитаксиальные тонкие плёнки SrIrO₃,
+        влияние деформации кристаллической решётки
+        и взаимодействия плёнки с подложкой.
+      </p>
+    </div>
+
+    <div class="research-card">
+      <h3>Electronic Transport</h3>
+      <p>
+        Температурные зависимости сопротивления,
+        эффект Холла и электронные транспортные свойства
+        функциональных оксидных материалов.
+      </p>
+    </div>
+
+    <div class="research-card">
+      <h3>Structural Characterization</h3>
+      <p>
+        Рентгеноструктурный анализ, XRD, RSM и AFM
+        для исследования структуры и морфологии тонких плёнок.
+      </p>
+    </div>
+
+    <div class="research-card">
+      <h3>Electronic Structure & XPS</h3>
+      <p>
+        Исследование электронной структуры,
+        спин-орбитального взаимодействия и химического
+        окружения методом рентгеновской фотоэлектронной спектроскопии.
+      </p>
+    </div>
+
+  </div>
+
+</section>
+
+
+<section id="education">
+
+  <div class="section-label">Academic path</div>
+
+  <h2>Education & Experience</h2>
+
+  <div class="timeline">
+
+    <div class="timeline-item">
+      <div class="timeline-year">2026 — Present</div>
+      <h3>HSE University</h3>
+      <p>Postgraduate studies · Physics</p>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-year">2024 — 2026</div>
+      <h3>HSE University</h3>
+      <p>Master's degree in Physics · Honors degree</p>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-year">2023 — Present</div>
+      <h3>Kotelnikov IRE RAS</h3>
+      <p>
+        Engineer · Laboratory of Physical Foundations
+        of Functional Thin-Film Oxide Electronics
+      </p>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-year">Bachelor's degree</div>
+      <h3>RTU MIREA</h3>
+      <p>Nanotechnology and Microsystems Engineering</p>
+    </div>
+
+  </div>
+
+</section>
+
+
+<section id="publications">
+
+  <div class="section-label">Selected works</div>
+
+  <h2>Publications</h2>
+
+  <div class="publication">
+
+    <div class="publication-year">2025</div>
+
+    <h3>
+      Structure and Electronic Transport in SrIrO₃ Thin Films
+      Under Epitaxial Strain Induced by Substrate Lattice Mismatch
+    </h3>
+
+    <p>
+      N. V. Dubitskiy et al. · Physics of the Solid State
+    </p>
+
+  </div>
+
+
+  <div class="publication">
+
+    <div class="publication-year">2025</div>
+
+    <h3>
+      Epitaxial Growth, Structure and Electronic Transport
+      of SrIrO₃ Thin Films
+    </h3>
+
+    <p>
+      N. V. Dubitskiy et al. · RENSIT
+    </p>
+
+  </div>
+
+  <div class="publication">
+
+    <div class="publication-year">More publications</div>
+
+    <h3>
+      Full publication list will be available through academic profiles.
+    </h3>
+
+    <p>
+      Google Scholar · ORCID · ResearchGate
+    </p>
+
+  </div>
+
+</section>
+
+
+<section id="profiles">
+
+  <div class="section-label">Academic identity</div>
+
+  <h2>Profiles</h2>
+
+  <div class="profiles">
+
+    <a class="profile-link" href="#">
+      Google Scholar
+    </a>
+
+    <a class="profile-link" href="#">
+      ORCID
+    </a>
+
+    <a class="profile-link" href="#">
+      ResearchGate
+    </a>
+
+    <a class="profile-link" href="#">
+      LinkedIn
+    </a>
+
+  </div>
+
+</section>
+
+
+<footer>
+
+  <div>
+    © 2026 Nikita V. Dubitskiy
+  </div>
+
+  <div>
+    Physicist · Researcher
+  </div>
+
+</footer>
+
+</body>
+</html>
