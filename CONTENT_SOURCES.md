@@ -28,3 +28,7 @@ The descriptions preserve the thesis' distinctions between measurements and inte
 ## Pending author confirmation
 
 The earlier GitHub draft mentioned HSE postgraduate enrollment from 2026 and an honors master's degree. These are omitted pending confirmation. Current role follows existing public profiles. No portrait has been invented.
+
+## Author portrait
+
+`assets/nikita-dubitskiy.jpg` is the photograph supplied by the author in this conversation. The original file is copied unchanged. It is displayed on both homepages and included in Person/ImageObject structured data and the image sitemap.
