@@ -12,7 +12,7 @@ Static bilingual website for GitHub Pages. No package installation, external fon
 2. Run `python3 scripts/build.py`.
 3. Commit the generator and generated pages to `main`.
 
-HTML is generated in advance: navigation, content and scientific links work without JavaScript. JavaScript adds publication filtering and the CV print button. Save CV as PDF through the browser print dialog.
+HTML is generated in advance: navigation, content and scientific links work without JavaScript. JavaScript adds publication filtering, theme switching and the email draft form. CV buttons download static PDF files.
 
 ## Publish
 
@@ -32,7 +32,7 @@ See `CONTENT_SOURCES.md` for sources and figure attribution. A website and struc
 
 Ownership verification is published both as `yandex_129322c641eb4aed.html` and a `yandex-verification` meta tag, using the code supplied by the owner. Complete verification by clicking **Проверить** in the owner's Yandex Webmaster account, then add `https://nikdubitskiy.github.io/sitemap.xml` under **Индексирование → Файлы Sitemap**.
 
-The sitemap includes language alternates and the portrait image. Crawlable HTML, individual Russian titles and descriptions, canonical URLs, visible Person microdata, JSON-LD identity and breadcrumbs support discovery. The original portrait is served from this domain and connected to the Person identity.
+The sitemap includes language alternates and the portrait image. Crawlable HTML, individual Russian titles and descriptions, canonical URLs, connected JSON-LD identity and breadcrumbs support discovery. The original portrait is served from this domain and connected to the Person identity.
 
 `site-config.json` holds public search verification codes and a public IndexNow key. It contains no passwords. To notify Yandex of updated URLs AFTER deployment, run `python3 scripts/notify_indexnow.py`. A 200 means receipt; a 202 means the key awaits verification. Neither guarantees inclusion or a position in search results.
 
@@ -51,3 +51,9 @@ References: https://yandex.ru/support/webmaster/ru/controlling-robot/sitemap and
 The CV buttons link directly to static PDFs; no print-dialog JavaScript is required. After changing the biography, run `python scripts/build.py` and `python scripts/export_cv.py`. PDF export requires Python Playwright and Chromium at `/usr/bin/chromium`. Generated RU/EN files live in `assets/nikita-dubitskiy-cv-ru.pdf` and `assets/nikita-dubitskiy-cv-en.pdf`.
 
 `scripts/science.py` contains original conceptual structure, electronic-state and device diagrams with visible source links. They are not crystallographic refinements or numerical band calculations.
+
+## Google indexing and entity identity
+
+`scripts/structured_data.py` connects the bilingual ProfilePage records, WebSite, Person, portrait, institute, laboratory and scholarly articles through stable identifiers. The same person is a coauthor of the listed publications; other listed authors are preserved. Abbreviated author lists remain partial. No follower counts, invented dates or knowledge-panel status are asserted. The 404 response contains no profile markup or language alternate links.
+
+See [SEARCH_VISIBILITY.md](SEARCH_VISIBILITY.md) for the audit, Google Search Console setup, account updates and measurement plan. Google verification is included only when the owner supplies `google_site_verification` in `site-config.json`. IndexNow does not submit URLs to Google.

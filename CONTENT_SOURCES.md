@@ -63,3 +63,9 @@ Additional conference evidence:
 - XXIX Nanophysics and Nanoelectronics Symposium, 10–14 March 2025: https://nanosymp.ru/ru/file/568/14c1a6b0/program_2025.pdf . Poster session on 11 March, Magnetic Nanostructures No. 1; N. V. Dubitskiy, poster 11, p. 45. The poster session's date is established on p. 41 and the section heading on p. 44.
 
 Font: Golos Text, self-hosted with SIL Open Font License in assets/fonts/OFL.txt.
+
+## Search identity audit, 18 October 2026
+
+The expanded author list for Physics of the Solid State 67(7), 1311–1315 follows https://journals.ioffe.ru/articles/61895 . The expanded author list for Russian Microelectronics 52(Suppl. 1), S53–S58 follows the Crossref record https://api.crossref.org/works/10.1134/S1063739723600802 . Both explicitly include N. V. Dubitskiy. The remaining abbreviated bibliographic lists are not presented as complete author lists in metadata.
+
+The public ORCID record https://pub.orcid.org/v3.0/0009-0003-1723-8103/person links the owner's Scholar and ResearchGate profiles. It contains no direct link to the new GitHub Pages website as of this audit. Profile account changes and Google Search Console submission remain owner-side steps; see SEARCH_VISIBILITY.md.

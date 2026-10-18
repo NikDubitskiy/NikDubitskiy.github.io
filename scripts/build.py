@@ -2,6 +2,8 @@
 from pathlib import Path
 from html import escape as esc
 import json
+import re
+import structured_data
 import xml.etree.ElementTree as ET
 
 ROOT=Path(__file__).resolve().parents[1]
@@ -21,11 +23,11 @@ PAPERS=[
  {'year':2025,'title':'Epitaxial Growth, Structure and Electronic Transport of SrIrO₃ Thin Films','authors':'N. V. Dubitskiy, V. A. Baydikova, G. A. Ovsyannikov et al.','journal':'RENSIT','details':'17(4), 439–448','doi':'10.17725/j.rensit.2025.17.439'},
  {'year':2025,'title':'Structure and Electronic Transport in SrIrO₃ Thin Films Under Epitaxial Strain Induced by Substrate Lattice Mismatch','authors':'N. V. Dubitskiy, V. A. Baydikova, A. M. Petrzhik, I. E. Moskal, A. V. Shadrin, V. A. Shmakov, G. A. Ovsyannikov','journal':'Physics of the Solid State','details':'67(6), 1073–1081','doi':'10.61011/PSS.2025.06.61710.4HH-25'},
  {'year':2025,'title':'Effect of epitaxial stresses on the structure and electron transport in strontium iridate thin films','authors':'V. A. Baydikova, N. V. Dubitskiy, A. M. Petrzhik et al.','journal':'Physics of Metals and Metallography','details':'126(13), 1652–1658','doi':'10.1134/S0031918X25602069'},
- {'year':2025,'title':'Electron Transport in Strontium Iridate Thin Films and Superconducting Heterostructures','authors':'Y. V. Kislinskii, I. E. Moskal, V. A. Baydikova et al.','journal':'Physics of the Solid State','details':'67(7), 1311–1315','doi':'10.61011/PSS.2025.07.61895.24HH-25'},
+ {'year':2025,'title':'Electron Transport in Strontium Iridate Thin Films and Superconducting Heterostructures','authors':'Y. V. Kislinskii, I. E. Moskal, V. A. Baydikova, K. Y. Constantinian, N. V. Dubitskiy, A. M. Petrzhik, G. D. Ulev, A. V. Shadrin, V. A. Shmakov, G. A. Ovsyannikov','journal':'Physics of the Solid State','details':'67(7), 1311–1315','doi':'10.61011/PSS.2025.07.61895.24HH-25'},
  {'year':2024,'title':'Structural Features, Electronic and Spin Transport in Epitaxial Thin Films of Iridates','authors':'V. A. Baydikova, N. V. Dubitskiy, I. E. Moskal et al.','journal':'RENSIT','details':'16(4), 509–518','doi':'10.17725/j.rensit.2024.16.509'},
  {'year':2024,'title':'Growth of epitaxial thin films of Sr₂IrO₄ antiferromagnet for spintronics heterostructures','authors':'I. E. Moskal, Y. V. Kislinskii, A. M. Petrzhik, G. A. Ovsyannikov, N. V. Dubitskiy','journal':'Physics of the Solid State','details':'66(7), 1063–1067','doi':'10.61011/PSS.2024.07.58977.58HH'},
  {'year':2024,'title':'Production of and Electronic Transport in Thin Films of Strontium Iridate','authors':'I. E. Moskal, A. M. Petrzhik, Y. V. Kislinskii, A. V. Shadrin, G. A. Ovsyannikov, N. V. Dubitskiy','journal':'Bulletin of the Russian Academy of Sciences: Physics','details':'88(4), 582–585','doi':'10.1134/S1062873823706360'},
- {'year':2023,'title':'Strontium Iridates as Barrier Materials for Josephson Heterostructures','authors':'Y. V. Kislinskii, K. Y. Constantinian, I. E. Moskal et al.','journal':'Russian Microelectronics','details':'52(Suppl. 1), S53–S58','doi':'10.1134/S1063739723600802'}
+ {'year':2023,'title':'Strontium Iridates as Barrier Materials for Josephson Heterostructures','authors':'Y. V. Kislinskii, K. Y. Constantinian, I. E. Moskal, N. V. Dubitskiy, A. M. Petrzhik, A. V. Shadrin, G. A. Ovsyannikov','journal':'Russian Microelectronics','details':'52(Suppl. 1), S53–S58','doi':'10.1134/S1063739723600802'}
 ]
 
 TEXT={
@@ -109,15 +111,8 @@ def render(lang,page,content=None):
  labels['ru']['conferences']='Конференции и научные доклады';labels['en']['conferences']='Conferences and scientific contributions'
  title=t['name']+' — '+labels[lang][page]
  desc={'conferences':('Конференции и доклады Никиты Дубицкого: МИРЭА, МФТИ, НИУ ВШЭ, МИФИ. Темы исследований, тезисы и награды.' if lang=='ru' else 'Conferences and contributions by Nikita Dubitskiy: MIREA, MIPT, HSE and MEPhI. Research topics, proceedings and awards.'),'home':t['description'],'research':('SrIrO₃ and Sr₂IrO₄ thin films, electronic transport and Josephson heterostructures. Research by Nikita Dubitskiy at Kotelnikov IRE RAS.' if lang=='en' else 'Исследования Никиты Дубицкого: плёнки SrIrO₃ и Sr₂IrO₄, электронный транспорт, спинтроника и джозефсоновские гетероструктуры. ИРЭ РАН.'),'publications':('Scientific publications by Nikita V. Dubitskiy: oxide thin films, spin–orbit coupling and electronic transport. Journal articles with DOI and thesis.' if lang=='en' else 'Научные публикации Никиты Владимировича Дубицкого: оксидные плёнки, спин-орбитальное взаимодействие и электронный транспорт. Статьи с DOI и диссертация.'),'cv':('Nikita Dubitskiy: research engineer at Kotelnikov IRE RAS, master’s degree in Physics from HSE University. Education, experience and experimental methods.' if lang=='en' else 'Никита Дубицкий: инженер ИРЭ РАН, магистр физики НИУ ВШЭ. Образование, научный опыт, экспериментальные методы и награды.'),'contact':('Contact physicist Nikita Dubitskiy at Kotelnikov IRE RAS, Moscow. Email, ORCID, Google Scholar, ResearchGate and CoLab.' if lang=='en' else 'Контакты физика Никиты Владимировича Дубицкого, ИРЭ РАН, Москва. Электронная почта, ORCID, Google Scholar, ResearchGate и CoLab.')}[page]
- person={'@type':'Person','@id':BASE+'/#nikita-dubitskiy','name':'Nikita V. Dubitskiy','alternateName':['Nikita Dubitskiy','Nikita Vladimirovich Dubitskiy','Никита Дубицкий','Никита Владимирович Дубицкий'],'url':BASE+'/','jobTitle':'Physicist and research engineer','description':TEXT['en']['description'],'sameAs':list(PROFILES.values()),'worksFor':{'@type':'ResearchOrganization','name':TEXT['en']['institute'],'url':'http://www.cplire.ru/','department':{'@type':'ResearchOrganization','name':'Laboratory No. 233','url':editorial.LAB}},'alumniOf':[{'@type':'CollegeOrUniversity','name':'HSE University'},{'@type':'CollegeOrUniversity','name':'MIREA — Russian Technological University'}],'knowsAbout':['Condensed matter physics','Epitaxial thin films','Strontium iridate','Electronic transport','Spin–orbit coupling']}
- web={'@type':'ProfilePage' if page=='home' else 'WebPage','@id':BASE+route+'#webpage','url':BASE+route,'name':title,'inLanguage':lang,'about':{'@id':person['@id']}}
- person['image']={'@id':BASE+'/#portrait'}
- person['identifier']={'@type':'PropertyValue','propertyID':'ORCID','value':'0009-0003-1723-8103','url':PROFILES['ORCID']}
- web['primaryImageOfPage']={'@id':BASE+'/#portrait'}
- if page=='home':web['mainEntity']={'@id':person['@id']}
- graph=[person,web,{'@type':'ImageObject','@id':BASE+'/#portrait','contentUrl':PORTRAIT,'url':PORTRAIT,'width':1254,'height':1254,'caption':'Nikita Vladimirovich Dubitskiy — physicist','representativeOfPage':True}]
+ graph=structured_data.graph(BASE,lang,page,route,title,desc,TEXT,PROFILES,PAPERS,editorial.LAB,editorial.NTO)
  if page!='home':graph.append({'@type':'BreadcrumbList','itemListElement':[{'@type':'ListItem','position':1,'name':t['nav'][0],'item':BASE+path(lang,'home')},{'@type':'ListItem','position':2,'name':t['nav'][idx],'item':BASE+route}]})
- if page=='publications':graph.append({'@type':'ItemList','itemListElement':[{'@type':'ListItem','position':i+1,'item':{'@type':'ScholarlyArticle','headline':p['title'],'url':p['url'],'identifier':p['doi'],'isPartOf':{'@type':'Periodical','name':p['journal']}}} for i,p in enumerate(PAPERS)]})
  nav=''.join(f'<a href="{path(lang,p)}"'+(' class="active" aria-current="page"' if p==page else '')+f'>{t["nav"][i]}</a>' for i,p in enumerate(PAGES))
  verification=''.join(f'<meta name="{name}" content="{esc(str(CONFIG.get(key,"")),quote=True)}">' for name,key in [('yandex-verification','yandex_verification'),('google-site-verification','google_site_verification')] if CONFIG.get(key))
  crumb='' if page=='home' else '<div class="breadcrumbs">'+a(path(lang,'home'),t['nav'][0])+f'<span aria-hidden="true">/</span><span>{t["nav"][idx]}</span></div>'
@@ -133,6 +128,8 @@ def build():
   for page in PAGES:
    target=ROOT/path(lang,page).lstrip('/')/'index.html';target.parent.mkdir(parents=True,exist_ok=True);target.write_text(render(lang,page),encoding='utf-8')
  notfound=render('en','home','<header class="page-heading"><p class="eyebrow">404</p><h1>Page not found</h1><p>The page may have moved.</p><a class="button" href="/">Back to home →</a></header>').replace('<link rel="canonical" href="'+BASE+'/">','<meta name="robots" content="noindex">')
+ notfound=re.sub(r'<script type="application/ld\+json">.*?</script>', '', notfound)
+ notfound=re.sub(r'<link rel="alternate"[^>]*>', '', notfound)
  (ROOT/'404.html').write_text(notfound,encoding='utf-8')
  ns='http://www.sitemaps.org/schemas/sitemap/0.9';xn='http://www.w3.org/1999/xhtml';im='http://www.google.com/schemas/sitemap-image/1.1'
  for prefix,uri in [('',ns),('xhtml',xn),('image',im)]:ET.register_namespace(prefix,uri)
@@ -142,6 +139,7 @@ def build():
    u=ET.SubElement(root,'{'+ns+'}url');ET.SubElement(u,'{'+ns+'}loc').text=BASE+path(lang,page)
    for language in ['en','ru']:
     ET.SubElement(u,'{'+xn+'}link',{'rel':'alternate','hreflang':language,'href':BASE+path(language,page)})
+   ET.SubElement(u,'{'+xn+'}link',{'rel':'alternate','hreflang':'x-default','href':BASE+path('en',page)})
    if page=='home':
     img=ET.SubElement(u,'{'+im+'}image');ET.SubElement(img,'{'+im+'}loc').text=PORTRAIT
     ET.SubElement(img,'{'+im+'}title').text=TEXT[lang]['name']+' — '+('physicist' if lang=='en' else 'физик')
