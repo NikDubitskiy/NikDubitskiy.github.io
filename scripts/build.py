@@ -4,6 +4,8 @@ from html import escape as esc
 import json
 import re
 import structured_data
+import details
+import citations
 import xml.etree.ElementTree as ET
 
 ROOT=Path(__file__).resolve().parents[1]
@@ -105,28 +107,42 @@ editorial.enrich(TEXT,PAPERS)
 def body(lang,page):
  return editorial.body(lang,page,TEXT,PAPERS,a,path,PROFILES)
 
-def render(lang,page,content=None):
+def render(lang,page,content=None,slug=None):
  t=TEXT[lang];idx=PAGES.index(page);route=path(lang,page)
  labels={'en':{'home':'Physicist · IRE RAS','research':'Oxide thin-film research','publications':'Scientific publications','cv':'Education & research experience','contact':'Contact & academic profiles'},'ru':{'home':'физик · ИРЭ РАН','research':'Исследования оксидных тонких плёнок','publications':'Научные публикации','cv':'Образование и научный опыт','contact':'Контакты и научные профили'}}
  labels['ru']['conferences']='Конференции и научные доклады';labels['en']['conferences']='Conferences and scientific contributions'
  title=t['name']+' — '+labels[lang][page]
  desc={'conferences':('Конференции и доклады Никиты Дубицкого: МИРЭА, МФТИ, НИУ ВШЭ, МИФИ. Темы исследований, тезисы и награды.' if lang=='ru' else 'Conferences and contributions by Nikita Dubitskiy: MIREA, MIPT, HSE and MEPhI. Research topics, proceedings and awards.'),'home':t['description'],'research':('SrIrO₃ and Sr₂IrO₄ thin films, electronic transport and Josephson heterostructures. Research by Nikita Dubitskiy at Kotelnikov IRE RAS.' if lang=='en' else 'Исследования Никиты Дубицкого: плёнки SrIrO₃ и Sr₂IrO₄, электронный транспорт, спинтроника и джозефсоновские гетероструктуры. ИРЭ РАН.'),'publications':('Scientific publications by Nikita V. Dubitskiy: oxide thin films, spin–orbit coupling and electronic transport. Journal articles with DOI and thesis.' if lang=='en' else 'Научные публикации Никиты Владимировича Дубицкого: оксидные плёнки, спин-орбитальное взаимодействие и электронный транспорт. Статьи с DOI и диссертация.'),'cv':('Nikita Dubitskiy: research engineer at Kotelnikov IRE RAS, master’s degree in Physics from HSE University. Education, experience and experimental methods.' if lang=='en' else 'Никита Дубицкий: инженер ИРЭ РАН, магистр физики НИУ ВШЭ. Образование, научный опыт, экспериментальные методы и награды.'),'contact':('Contact physicist Nikita Dubitskiy at Kotelnikov IRE RAS, Moscow. Email, ORCID, Google Scholar, ResearchGate and CoLab.' if lang=='en' else 'Контакты физика Никиты Владимировича Дубицкого, ИРЭ РАН, Москва. Электронная почта, ORCID, Google Scholar, ResearchGate и CoLab.')}[page]
- graph=structured_data.graph(BASE,lang,page,route,title,desc,TEXT,PROFILES,PAPERS,editorial.LAB,editorial.NTO)
+ if slug:
+  note=details.NOTES[slug][lang];route=details.route(lang,slug,path);title=note['short']+' — '+t['name'];desc=note['description']
+ graph=structured_data.graph(BASE,lang,'detail' if slug else page,route,title,desc,TEXT,PROFILES,PAPERS,editorial.LAB,editorial.NTO)
+ if slug:
+  item=details.entity(lang,slug,PAPERS,TEXT,BASE);graph.append(item)
+  graph[1]['mainEntity']={'@id':item['@id']};graph[1]['about']=[{'@id':BASE+'/#nikita-dubitskiy'},{'@id':item['@id']}]
  if page!='home':graph.append({'@type':'BreadcrumbList','itemListElement':[{'@type':'ListItem','position':1,'name':t['nav'][0],'item':BASE+path(lang,'home')},{'@type':'ListItem','position':2,'name':t['nav'][idx],'item':BASE+route}]})
+ if slug:graph[-1]['itemListElement'].insert(1,{'@type':'ListItem','position':2,'name':t['nav'][idx],'item':BASE+path(lang,page)});graph[-1]['itemListElement'][-1].update(position=3,name=note['short'])
  nav=''.join(f'<a href="{path(lang,p)}"'+(' class="active" aria-current="page"' if p==page else '')+f'>{t["nav"][i]}</a>' for i,p in enumerate(PAGES))
  verification=''.join(f'<meta name="{name}" content="{esc(str(CONFIG.get(key,"")),quote=True)}">' for name,key in [('yandex-verification','yandex_verification'),('google-site-verification','google_site_verification')] if CONFIG.get(key))
  crumb='' if page=='home' else '<div class="breadcrumbs">'+a(path(lang,'home'),t['nav'][0])+f'<span aria-hidden="true">/</span><span>{t["nav"][idx]}</span></div>'
+ if slug:crumb='<div class="breadcrumbs">'+a(path(lang,'home'),t['nav'][0])+'<span aria-hidden="true">/</span>'+a(path(lang,page),t['nav'][idx])+'<span aria-hidden="true">/</span><span>'+esc(note['short'])+'</span></div>'
+ language_route=lambda language:details.route(language,slug,path) if slug else path(language,page)
+ extra=details.metadata(lang,slug,PAPERS,TEXT,BASE) if slug else ''
  return f'''<!doctype html>
-<html lang="{lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>{esc(title)}</title><meta name="description" content="{esc(desc,quote=True)}"><meta name="author" content="Nikita V. Dubitskiy"><meta name="theme-color" content="#eef2f6"><meta name="color-scheme" content="light dark"><script src="/assets/theme.js"></script>{verification}
-<link rel="canonical" href="{BASE+route}"><link rel="alternate" hreflang="en" href="{BASE+path('en',page)}"><link rel="alternate" hreflang="ru" href="{BASE+path('ru',page)}"><link rel="alternate" hreflang="x-default" href="{BASE+path('en',page)}">
+<html lang="{lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>{esc(title)}</title><meta name="description" content="{esc(desc,quote=True)}"><meta name="author" content="Nikita V. Dubitskiy"><meta name="theme-color" content="#eef2f6"><meta name="color-scheme" content="light dark"><script src="/assets/theme.js"></script>{verification}{extra}<meta name="robots" content="max-image-preview:large">
+<link rel="canonical" href="{BASE+route}"><link rel="alternate" hreflang="en" href="{BASE+language_route('en')}"><link rel="alternate" hreflang="ru" href="{BASE+language_route('ru')}"><link rel="alternate" hreflang="x-default" href="{BASE+language_route('en')}">
 <meta property="og:type" content="website"><meta property="og:title" content="{esc(title,quote=True)}"><meta property="og:description" content="{esc(desc,quote=True)}"><meta property="og:url" content="{BASE+route}"><meta property="og:site_name" content="Nikita Dubitskiy"><meta property="og:locale" content="{'ru_RU' if lang=='ru' else 'en_US'}"><meta property="og:locale:alternate" content="{'en_US' if lang=='ru' else 'ru_RU'}"><meta property="og:image" content="{BASE}/assets/social.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="Nikita Dubitskiy — experimental condensed matter physics"><meta name="twitter:card" content="summary_large_image">
-<link rel="icon" type="image/svg+xml" href="/assets/favicon.svg"><link rel="stylesheet" href="/assets/site.css"><link rel="stylesheet" href="/assets/design.css"><script defer src="/assets/site.js"></script><script type="application/ld+json">{json.dumps({'@context':'https://schema.org','@graph':graph},ensure_ascii=False)}</script></head>
-<body class="page-{page}"><a class="skip-link" href="#main">{t['skip']}</a><div class="site-shell"><header class="site-header"><a class="brand" href="{path(lang,'home')}" aria-label="{t['name']}"><span class="monogram" aria-hidden="true">ND<span>.</span></span><span class="brand-name">{t['name']}<span>{'Physicist · IRE RAS' if lang=='en' else 'Физик · ИРЭ РАН'}</span></span></a><div class="header-tools"><button class="theme-toggle" type="button" hidden aria-label="{'Сменить тему' if lang=='ru' else 'Toggle theme'}"><span aria-hidden="true">◐</span><span class="theme-label">{'Тема' if lang=='ru' else 'Theme'}</span></button><div class="language-switch" aria-label="{'Language' if lang=='en' else 'Язык'}">{a(path('en',page),'EN','current' if lang=='en' else '')}<span aria-hidden="true">/</span>{a(path('ru',page),'RU','current' if lang=='ru' else '')}</div></div></header><nav class="main-nav" aria-label="{'Main navigation' if lang=='en' else 'Основное меню'}">{nav}<span class="nav-signature" aria-hidden="true">5d / SrIrO₃</span></nav><main id="main">{crumb}{content if content is not None else body(lang,page)}</main><footer class="site-footer"><div><strong>{t['name']}</strong><p>{t['footer']}</p></div><div>{a('mailto:nikita.dubitskiy@gmail.com','nikita.dubitskiy@gmail.com')}<p>{t['location']}</p></div></footer></div><dialog class="image-dialog"><button class="close-image" type="button" aria-label="{'Закрыть изображение' if lang=='ru' else 'Close image'}">×</button><img alt=""><p></p></dialog></body></html>'''
+<link rel="preload" href="/assets/fonts/GolosText.woff" as="font" type="font/woff" crossorigin><link rel="icon" type="image/svg+xml" href="/assets/favicon.svg"><link rel="stylesheet" href="/assets/site.css"><link rel="stylesheet" href="/assets/design.css"><script defer src="/assets/site.js"></script><script type="application/ld+json">{json.dumps({'@context':'https://schema.org','@graph':graph},ensure_ascii=False)}</script></head>
+<body class="page-{page}"><a class="skip-link" href="#main">{t['skip']}</a><div class="site-shell"><header class="site-header"><a class="brand" href="{path(lang,'home')}" aria-label="{t['name']}"><span class="monogram" aria-hidden="true">ND<span>.</span></span><span class="brand-name">{t['name']}<span>{'Physicist · IRE RAS' if lang=='en' else 'Физик · ИРЭ РАН'}</span></span></a><div class="header-tools"><button class="theme-toggle" type="button" hidden aria-label="{'Сменить тему' if lang=='ru' else 'Toggle theme'}"><span aria-hidden="true">◐</span><span class="theme-label">{'Тема' if lang=='ru' else 'Theme'}</span></button><div class="language-switch" aria-label="{'Language' if lang=='en' else 'Язык'}">{a(language_route('en'),'EN','current' if lang=='en' else '')}<span aria-hidden="true">/</span>{a(language_route('ru'),'RU','current' if lang=='ru' else '')}</div></div></header><nav class="main-nav" aria-label="{'Main navigation' if lang=='en' else 'Основное меню'}">{nav}<span class="nav-signature" aria-hidden="true">5d / SrIrO₃</span></nav><main id="main">{crumb}{content if content is not None else body(lang,page)}</main><footer class="site-footer"><div><strong>{t['name']}</strong><p>{t['footer']}</p></div><div>{a('mailto:nikita.dubitskiy@gmail.com','nikita.dubitskiy@gmail.com')}<p>{t['location']}</p></div></footer></div><dialog class="image-dialog"><button class="close-image" type="button" aria-label="{'Закрыть изображение' if lang=='ru' else 'Close image'}">×</button><img alt=""><p></p></dialog></body></html>'''
 
 def build():
  for lang in TEXT:
   for page in PAGES:
    target=ROOT/path(lang,page).lstrip('/')/'index.html';target.parent.mkdir(parents=True,exist_ok=True);target.write_text(render(lang,page),encoding='utf-8')
+ for lang in TEXT:
+  for slug,note in details.NOTES.items():
+   target=ROOT/details.route(lang,slug,path).lstrip('/')/'index.html';target.parent.mkdir(parents=True,exist_ok=True)
+   target.write_text(render(lang,note['parent'],details.content(lang,slug,PAPERS,TEXT,a,path),slug),encoding='utf-8')
+ citations.build(ROOT,PAPERS,details.NOTES)
  notfound=render('en','home','<header class="page-heading"><p class="eyebrow">404</p><h1>Page not found</h1><p>The page may have moved.</p><a class="button" href="/">Back to home →</a></header>').replace('<link rel="canonical" href="'+BASE+'/">','<meta name="robots" content="noindex">')
  notfound=re.sub(r'<script type="application/ld\+json">.*?</script>', '', notfound)
  notfound=re.sub(r'<link rel="alternate"[^>]*>', '', notfound)
@@ -134,20 +150,19 @@ def build():
  ns='http://www.sitemaps.org/schemas/sitemap/0.9';xn='http://www.w3.org/1999/xhtml';im='http://www.google.com/schemas/sitemap-image/1.1'
  for prefix,uri in [('',ns),('xhtml',xn),('image',im)]:ET.register_namespace(prefix,uri)
  root=ET.Element('{'+ns+'}urlset')
- for lang in TEXT:
-  for page in PAGES:
-   u=ET.SubElement(root,'{'+ns+'}url');ET.SubElement(u,'{'+ns+'}loc').text=BASE+path(lang,page)
-   for language in ['en','ru']:
-    ET.SubElement(u,'{'+xn+'}link',{'rel':'alternate','hreflang':language,'href':BASE+path(language,page)})
-   ET.SubElement(u,'{'+xn+'}link',{'rel':'alternate','hreflang':'x-default','href':BASE+path('en',page)})
-   if page=='home':
-    img=ET.SubElement(u,'{'+im+'}image');ET.SubElement(img,'{'+im+'}loc').text=PORTRAIT
-    ET.SubElement(img,'{'+im+'}title').text=TEXT[lang]['name']+' — '+('physicist' if lang=='en' else 'физик')
+ routes=[(lang,page,None) for lang in TEXT for page in PAGES]+[(lang,n['parent'],slug) for lang in TEXT for slug,n in details.NOTES.items()]
+ for lang,page,slug in routes:
+  current=lambda language:details.route(language,slug,path) if slug else path(language,page)
+  u=ET.SubElement(root,'{'+ns+'}url');ET.SubElement(u,'{'+ns+'}loc').text=BASE+current(lang)
+  for language in ['en','ru','x-default']:
+   ET.SubElement(u,'{'+xn+'}link',{'rel':'alternate','hreflang':language,'href':BASE+current('en' if language=='x-default' else language)})
+  if page=='home' and not slug:
+   img=ET.SubElement(u,'{'+im+'}image');ET.SubElement(img,'{'+im+'}loc').text=PORTRAIT
+   ET.SubElement(img,'{'+im+'}title').text=TEXT[lang]['name']+' — '+('physicist' if lang=='en' else 'физик')
+ ET.indent(root,space='  ')
  ET.ElementTree(root).write(ROOT/'sitemap.xml',encoding='utf-8',xml_declaration=True)
- # A supported plain-text alternative for diagnosing Search Console fetch errors.
- # Both formats are built from the same canonical routes to prevent drift.
- (ROOT/'sitemap.txt').write_text(''.join(BASE+path(lang,page)+'\n' for lang in TEXT for page in PAGES),encoding='utf-8')
+ (ROOT/'sitemap.txt').write_text(''.join(u.find('{'+ns+'}loc').text+'\n' for u in root),encoding='utf-8')
  (ROOT/'robots.txt').write_text('User-agent: *\nAllow: /\n\nSitemap: '+BASE+'/sitemap.xml\nSitemap: '+BASE+'/sitemap.txt\n')
  (ROOT/'.nojekyll').touch()
- print('Built 12 bilingual pages, 404, sitemap and robots.txt')
+ print('Built',len(routes),'bilingual pages, bibliography downloads, 404 and sitemaps')
 if __name__=='__main__':build()

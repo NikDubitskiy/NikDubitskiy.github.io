@@ -10,3 +10,9 @@ https://nikdubitskiy.github.io/ru/publications/
 https://nikdubitskiy.github.io/ru/cv/
 https://nikdubitskiy.github.io/ru/contact/
 https://nikdubitskiy.github.io/ru/conferences/
+https://nikdubitskiy.github.io/publications/substrate-magnetotransport/
+https://nikdubitskiy.github.io/publications/josephson-iridates/
+https://nikdubitskiy.github.io/research/thesis/
+https://nikdubitskiy.github.io/ru/publications/substrate-magnetotransport/
+https://nikdubitskiy.github.io/ru/publications/josephson-iridates/
+https://nikdubitskiy.github.io/ru/research/thesis/

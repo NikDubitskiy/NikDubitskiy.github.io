@@ -69,3 +69,10 @@ Font: Golos Text, self-hosted with SIL Open Font License in assets/fonts/OFL.txt
 The expanded author list for Physics of the Solid State 67(7), 1311–1315 follows https://journals.ioffe.ru/articles/61895 . The expanded author list for Russian Microelectronics 52(Suppl. 1), S53–S58 follows the Crossref record https://api.crossref.org/works/10.1134/S1063739723600802 . Both explicitly include N. V. Dubitskiy. The remaining abbreviated bibliographic lists are not presented as complete author lists in metadata.
 
 The public ORCID record https://pub.orcid.org/v3.0/0009-0003-1723-8103/person links the owner's Scholar and ResearchGate profiles. It contains no direct link to the new GitHub Pages website as of this audit. Profile account changes and Google Search Console submission remain owner-side steps; see SEARCH_VISIBILITY.md.
+
+## Research notes added for discovery
+
+- `/publications/substrate-magnetotransport/` and RU counterpart: article metadata from Crossref DOI 10.1016/j.jpcs.2026.114155; research scope and methods from the linked author manuscript https://arxiv.org/abs/2511.02998 . The version note distinguishes the manuscript title from the published title. No quantitative manuscript results are attributed to the final paper here.
+- `/publications/josephson-iridates/` and RU counterpart: https://jmsn.press/publications/10.64214/jmsn.01.03005 , abstract, experimental details and conclusion. I_c R_N ranges and interlayer thicknesses refer to different device sets, not a thickness-matched comparison. Extended abstract, not a new journal article.
+- `/research/thesis/` and RU counterpart: author's thesis, Figshare DOI 10.6084/m9.figshare.34003488.v1, methods and research question. This is a summary of the revised English edition.
+- New WebP gallery files are format conversions of the existing PNG assets. Pixel equality was verified; figure dimensions and original enlargement files are preserved. WOFF is generated from the same licensed Golos Text TTF using fontTools.

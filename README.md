@@ -61,3 +61,13 @@ See [SEARCH_VISIBILITY.md](SEARCH_VISIBILITY.md) for the audit, Google Search Co
 ## Plain-text sitemap fallback
 
 `sitemap.txt` lists the same 12 canonical URLs as `sitemap.xml` and is generated from the same routes. It is linked in robots.txt alongside the XML sitemap. This is a Google-supported alternative for a fresh Search Console submission while investigating the owner's reported XML fetch failure. It does not establish the cause of that failure or guarantee indexing. Submit the full address https://nikdubitskiy.github.io/sitemap.txt in Search Console.
+
+## Research notes and citation exports
+
+The site now builds 18 bilingual pages. `scripts/details.py` defines three sourced notes: substrate-dependent SrIrO3 magnetotransport, Josephson interlayers and the master’s thesis. Each has its own canonical URL, reciprocal language links, description, breadcrumb, linked scholarly identity and bibliographic citation metadata. These are original summaries, not copies of publisher full text. Metadata does not guarantee Google Scholar inclusion or a knowledge panel. Notes are linked from the publication list, thesis boxes and each other.
+
+`scripts/citations.py` builds BibTeX/RIS files for 11 works and individual files for the two article notes. Abbreviated author lists are explicitly marked as partial (`others` in BibTeX and N1 in RIS). The earlier arXiv version is not exported as another article. Journal issue years remain bibliographic years.
+
+Golos Text is served as WOFF (93,904 bytes instead of 184,292). The license and original TTF remain. Gallery previews use lossless WebP conversions, with identical RGB pixels; enlargement links retain the original PNG files.
+
+After deployment, `python scripts/notify_indexnow.py --engine bing` or `--engine yandex` submits the current sitemap URLs. Receipt is not proof of indexing. No Google Indexing API is used for these academic pages.
