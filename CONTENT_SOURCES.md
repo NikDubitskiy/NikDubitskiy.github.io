@@ -32,3 +32,18 @@ The earlier GitHub draft mentioned HSE postgraduate enrollment from 2026 and an 
 ## Author portrait
 
 `assets/nikita-dubitskiy.jpg` is the photograph supplied by the author in this conversation. The original file is copied unchanged. It is displayed on both homepages and included in Person/ImageObject structured data and the image sitemap.
+
+## October 2026 editorial redesign
+
+- Bachelor's field: Nanotechnology and Microsystem Engineering, explicitly supplied by the author in this conversation.
+- Official laboratory page: http://www.cplire.ru/rus/labs/233/233.html — laboratory name and head, G. A. Ovsyannikov.
+- Fakel NTO: nomination in “Engine of Science” documented at https://t.me/s/extrahse/3368 and the author's award profile above. No finalist/winner status is asserted.
+- 2023–2024 conference dates, topics and prizes: author's Fakel NTO profile. Entries distinguish documented talks from first-author proceedings and coauthorship.
+- Optotech 2024: https://www.researchgate.net/publication/390731049_Vlianie_uslovij_rosta_na_strukturu_i_elektronnyj_transport_epitaksialnyh_tonkih_plenok_SrIrO3
+- XXII strongly correlated systems conference, May 2025: https://www.researchgate.net/publication/392495105_Elektronnyj_transport_v_tonkih_plenkah_Sr2IrO4_i_dzozefsonovskih_perehodah_na_ih_osnove — coauthorship, not evidence of personal attendance.
+- Advanced functional materials conference, 14–18 September 2026: https://jmsn.press/publications/01-03005 — first-author extended abstract; conference name and dates in publisher footnote.
+- Russian paper headings are explanatory translations, accompanied by the original titles and publication metadata. Years reflect journal issues.
+
+`assets/plasma.png`: unmodified embedded image from thesis Fig. 6(b), PDF p. 24, printed p. 19. `assets/hall-device.jpeg`: unmodified embedded image from Fig. 13(b), PDF p. 35, printed p. 30. Both are attributed to the thesis (CC BY 4.0). The HTML lattice diagram is explicitly conceptual and not to scale; it is not measured data.
+
+Several DOI resolver URLs returned 404 although publisher records contain those identifiers. Publication headings therefore use direct publisher pages/PDFs where verified. RENSIT and Ioffe HTTPS endpoints returned 503 while their HTTP endpoints returned 200, so tested HTTP links are used. ScienceDirect access is blocked from this execution environment; JPCS metadata is verified with Crossref and the earlier arXiv manuscript is linked separately.

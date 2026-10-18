@@ -37,3 +37,11 @@ The sitemap includes language alternates and the portrait image. Crawlable HTML,
 `site-config.json` holds public search verification codes and a public IndexNow key. It contains no passwords. To notify Yandex of updated URLs AFTER deployment, run `python3 scripts/notify_indexnow.py`. A 200 means receipt; a 202 means the key awaits verification. Neither guarantees inclusion or a position in search results.
 
 References: https://yandex.ru/support/webmaster/ru/controlling-robot/sitemap and https://yandex.ru/support/webmaster/ru/indexnow/reference .
+
+## Editorial content and themes
+
+- `scripts/content.py`: sourced biography, conference records, Russian explanatory paper titles and page components. `scripts/build.py` keeps bibliographic records and generates HTML/SEO files.
+- `assets/site.css`: responsive reading layout, translucent navigation and light/dark colour tokens. `assets/theme.js` applies the saved theme before first paint; the default follows system preferences. No account or tracking is used.
+- The email form opens a `mailto:` draft with encoded subject and body. It does not send mail or store submissions. The visitor needs a configured email app, or can copy the address.
+- The research atlas opens original images in an accessible dialog; links still open the original files without JavaScript.
+- Rebuild with `python3 scripts/build.py`. The sitemap now includes 12 bilingual pages, including `/conferences/` and `/ru/conferences/`.
