@@ -57,3 +57,7 @@ The CV buttons link directly to static PDFs; no print-dialog JavaScript is requi
 `scripts/structured_data.py` connects the bilingual ProfilePage records, WebSite, Person, portrait, institute, laboratory and scholarly articles through stable identifiers. The same person is a coauthor of the listed publications; other listed authors are preserved. Abbreviated author lists remain partial. No follower counts, invented dates or knowledge-panel status are asserted. The 404 response contains no profile markup or language alternate links.
 
 See [SEARCH_VISIBILITY.md](SEARCH_VISIBILITY.md) for the audit, Google Search Console setup, account updates and measurement plan. Google verification is included only when the owner supplies `google_site_verification` in `site-config.json`. IndexNow does not submit URLs to Google.
+
+## Plain-text sitemap fallback
+
+`sitemap.txt` lists the same 12 canonical URLs as `sitemap.xml` and is generated from the same routes. It is linked in robots.txt alongside the XML sitemap. This is a Google-supported alternative for a fresh Search Console submission while investigating the owner's reported XML fetch failure. It does not establish the cause of that failure or guarantee indexing. Submit the full address https://nikdubitskiy.github.io/sitemap.txt in Search Console.

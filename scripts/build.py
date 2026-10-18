@@ -144,7 +144,10 @@ def build():
     img=ET.SubElement(u,'{'+im+'}image');ET.SubElement(img,'{'+im+'}loc').text=PORTRAIT
     ET.SubElement(img,'{'+im+'}title').text=TEXT[lang]['name']+' — '+('physicist' if lang=='en' else 'физик')
  ET.ElementTree(root).write(ROOT/'sitemap.xml',encoding='utf-8',xml_declaration=True)
- (ROOT/'robots.txt').write_text('User-agent: *\nAllow: /\n\nSitemap: '+BASE+'/sitemap.xml\n')
+ # A supported plain-text alternative for diagnosing Search Console fetch errors.
+ # Both formats are built from the same canonical routes to prevent drift.
+ (ROOT/'sitemap.txt').write_text(''.join(BASE+path(lang,page)+'\n' for lang in TEXT for page in PAGES),encoding='utf-8')
+ (ROOT/'robots.txt').write_text('User-agent: *\nAllow: /\n\nSitemap: '+BASE+'/sitemap.xml\nSitemap: '+BASE+'/sitemap.txt\n')
  (ROOT/'.nojekyll').touch()
  print('Built 12 bilingual pages, 404, sitemap and robots.txt')
 if __name__=='__main__':build()
