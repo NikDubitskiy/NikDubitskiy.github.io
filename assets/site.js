@@ -39,7 +39,6 @@
     };
     search.addEventListener('input',update);year.addEventListener('change',update);
   }
-  document.querySelector('.print-button')?.addEventListener('click',()=>window.print());
   document.querySelectorAll('.contact-form').forEach(form=>{
     form.addEventListener('submit',e=>{
       e.preventDefault();

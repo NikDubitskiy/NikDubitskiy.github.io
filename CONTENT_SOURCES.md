@@ -47,3 +47,19 @@ The earlier GitHub draft mentioned HSE postgraduate enrollment from 2026 and an 
 `assets/plasma.png`: unmodified embedded image from thesis Fig. 6(b), PDF p. 24, printed p. 19. `assets/hall-device.jpeg`: unmodified embedded image from Fig. 13(b), PDF p. 35, printed p. 30. Both are attributed to the thesis (CC BY 4.0). The HTML lattice diagram is explicitly conceptual and not to scale; it is not measured data.
 
 Several DOI resolver URLs returned 404 although publisher records contain those identifiers. Publication headings therefore use direct publisher pages/PDFs where verified. RENSIT and Ioffe HTTPS endpoints returned 503 while their HTTP endpoints returned 200, so tested HTTP links are used. ScienceDirect access is blocked from this execution environment; JPCS metadata is verified with Crossref and the earlier arXiv manuscript is linked separately.
+
+## Broader iridate research and device context
+
+The homepage now covers both SrIrO3 and Sr2IrO4 and uses original explanatory SVG diagrams. Octahedral connectivity is idealized (Sr and rotations omitted); E(k) lines are qualitative illustrations, not calculated dispersions or experimental results. References:
+
+- B. J. Kim et al., PRL 101, 076402 (2008), https://arxiv.org/abs/0803.2927 — spin–orbit-assisted Mott state of Sr2IrO4.
+- T. Nan et al., PNAS 116, 16186–16191 (2019), DOI 10.1073/pnas.1812822116; corrected Fig. 1 and caption: https://pmc.ncbi.nlm.nih.gov/articles/PMC7431029/ — SrIrO3 structure and electronic bands. No copyrighted figure is reproduced.
+- L. Liu et al., Nature Nanotechnology 14, 939–944 (2019), https://www.nature.com/articles/s41565-019-0534-7 — current-induced switching in SrIrO3/SrRuO3; author conference abstract: https://meetings-archive.aps.org/mar/2020/a47/6/ . External group's experimental prototype, not the author's device.
+- H. Wang et al., Nature Communications 10, 2280 (2019), https://www.nature.com/articles/s41467-019-10299-6 — memory in 1% Ga-doped Sr2IrO4, demonstrated at 10 K (Fig. 4). Clearly separated from the author's research.
+
+Additional conference evidence:
+- MIPT 66th conference, session held 3 April 2024 at IRE RAS: https://abitu.net/event/4828/conference/view_division/3227546 . Replaces the generic nomination-profile link for the existing entry.
+- 21st Ivan V. Anisimkin Research Competition, 7 April 2025: http://www.cplire.ru/rus/young_sci_competitions/2025/program_2025.pdf , p. 4, talk 3. Participation confirmed by the author; no prize asserted.
+- XXIX Nanophysics and Nanoelectronics Symposium, 10–14 March 2025: https://nanosymp.ru/ru/file/568/14c1a6b0/program_2025.pdf . Poster session on 11 March, Magnetic Nanostructures No. 1; N. V. Dubitskiy, poster 11, p. 45. The poster session's date is established on p. 41 and the section heading on p. 44.
+
+Font: Golos Text, self-hosted with SIL Open Font License in assets/fonts/OFL.txt.

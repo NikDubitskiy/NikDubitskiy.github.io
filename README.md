@@ -45,3 +45,9 @@ References: https://yandex.ru/support/webmaster/ru/controlling-robot/sitemap and
 - The email form opens a `mailto:` draft with encoded subject and body. It does not send mail or store submissions. The visitor needs a configured email app, or can copy the address.
 - The research atlas opens original images in an accessible dialog; links still open the original files without JavaScript.
 - Rebuild with `python3 scripts/build.py`. The sitemap now includes 12 bilingual pages, including `/conferences/` and `/ru/conferences/`.
+
+## CV downloads
+
+The CV buttons link directly to static PDFs; no print-dialog JavaScript is required. After changing the biography, run `python scripts/build.py` and `python scripts/export_cv.py`. PDF export requires Python Playwright and Chromium at `/usr/bin/chromium`. Generated RU/EN files live in `assets/nikita-dubitskiy-cv-ru.pdf` and `assets/nikita-dubitskiy-cv-en.pdf`.
+
+`scripts/science.py` contains original conceptual structure, electronic-state and device diagrams with visible source links. They are not crystallographic refinements or numerical band calculations.
