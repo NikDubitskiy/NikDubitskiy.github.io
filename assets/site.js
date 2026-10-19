@@ -9,7 +9,7 @@
       toggle.setAttribute('aria-pressed', String(dark));
       toggle.querySelector('.theme-label').textContent = ru ? (dark ? 'Ночная' : 'Дневная') : (dark ? 'Dark' : 'Light');
     }
-    document.querySelector('meta[name="theme-color"]')?.setAttribute('content',dark ? '#101721' : '#eef2f6');
+    document.querySelector('meta[name="theme-color"]')?.setAttribute('content',dark ? '#141916' : '#f0f0e9');
   };
   paint();
   toggle?.addEventListener('click', () => {
@@ -61,4 +61,45 @@
     dialog.querySelector('.close-image').addEventListener('click',()=>dialog.close());
     dialog.addEventListener('click',e=>{if(e.target===dialog){const r=dialog.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)dialog.close();}});
   }
+})();
+
+// Progressive enhancement: every page remains readable without JavaScript.
+(() => {
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+  if(!reduced.matches) document.body.classList.add('motion-enabled');
+  const menu = document.querySelector('.menu-toggle');
+  const nav = document.querySelector('.main-nav');
+  if (menu && nav) {
+    menu.hidden = false;
+    document.body.classList.add('menu-enabled');
+    const close = () => { menu.setAttribute('aria-expanded','false'); nav.classList.remove('is-open'); };
+    menu.addEventListener('click', () => {
+      const open = menu.getAttribute('aria-expanded') !== 'true';
+      menu.setAttribute('aria-expanded',String(open)); nav.classList.toggle('is-open',open);
+    });
+    document.addEventListener('keydown',e=>{if(e.key==='Escape' && nav.classList.contains('is-open')){close();menu.focus();}});
+    matchMedia('(min-width: 601px)').addEventListener('change',close);
+  }
+  if ('IntersectionObserver' in window) {
+    const reveal = new IntersectionObserver(entries=>entries.forEach(entry=>{
+      if(entry.isIntersecting){entry.target.classList.add('is-visible');reveal.unobserve(entry.target);}
+    }),{threshold:0.06});
+    if(!reduced.matches) document.querySelectorAll('.article-section,.atlas-item,.home-end').forEach(el=>{
+      // Only animate content below the initial viewport; no hidden hero or delayed LCP.
+      if(el.getBoundingClientRect().top>innerHeight){el.classList.add('reveal-ready');reveal.observe(el);}
+    });
+    reduced.addEventListener('change',()=>{if(reduced.matches){document.querySelectorAll('.reveal-ready').forEach(el=>el.classList.add('is-visible'));reveal.disconnect();}});
+  }
+  const bar=document.querySelector('.reading-progress');
+  const links=[...document.querySelectorAll('.contents a[href^="#"]')];
+  const sections=links.map(a=>document.getElementById(a.hash.slice(1)));
+  let pending=false;
+  const update=()=>{
+    const height=document.documentElement.scrollHeight-innerHeight;
+    if(bar)bar.style.transform=`scaleX(${height>0?Math.min(1,Math.max(0,scrollY/height)):0})`;
+    let current=-1;sections.forEach((el,i)=>{if(el && el.getBoundingClientRect().top<=240)current=i;});
+    links.forEach((a,i)=>{if(i===current)a.setAttribute('aria-current','location');else a.removeAttribute('aria-current');});pending=false;
+  };
+  addEventListener('scroll',()=>{if(!pending){pending=true;requestAnimationFrame(update);}},{passive:true});
+  addEventListener('resize',update);update();
 })();
